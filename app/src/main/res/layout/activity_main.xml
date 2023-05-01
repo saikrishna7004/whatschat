@@ -29,6 +29,7 @@
             android:background="@color/purple_500"
             app:tabTextColor="@android:color/darker_gray"
             app:tabSelectedTextColor="@android:color/white"
+            app:tabIndicatorColor="@color/white"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:contentDescription="@string/chats" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -49,5 +50,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/app_name"
         app:srcCompat="@android:drawable/ic_dialog_email"
+        app:tint="@color/white"
+        app:backgroundTint="@color/purple_500"
         tools:ignore="DuplicateSpeakableTextCheck" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

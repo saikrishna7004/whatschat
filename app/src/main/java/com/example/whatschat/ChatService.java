@@ -33,10 +33,10 @@ import io.socket.emitter.Emitter;
 public class ChatService extends Service {
 
     private static final String TAG = "ChatService";
-    private static final String CHANNEL_ID = "ChatServiceChannel";
-    private static final String CHANNEL_ID_SILENT = "ServiceRunning";
+    public static final String CHANNEL_ID = "ChatServiceChannel";
+    public static final String CHANNEL_ID_SILENT = "ServiceRunning";
     private static boolean running;
-    private static final String ACTION_REPLY = "com.example.whatschat.REPLY";
+    public static final String ACTION_REPLY = "com.example.whatschat.REPLY";
 
     private Socket socket;
 
@@ -61,29 +61,21 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-            String action = null;
-            if(intent!=null){
-                action = intent.getAction();
-            }
-            if(action!=null)
-                Toast.makeText(this, action, Toast.LENGTH_SHORT).show();
-            if (ACTION_REPLY.equals(action)) {
-                handleReplyAction(intent);
-            } else {
-                Intent notificationIntent = new Intent(this, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        Toast.makeText(this, "ChatService OnStartCommand", Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onStartCommand: Action is not null");
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
-                Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID_SILENT)
-                        .setContentTitle("Chat Service")
-                        .setContentText("Running in background")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentIntent(pendingIntent)
-                        .setSound(null)
-                        .setPriority(NotificationCompat.PRIORITY_LOW)
-                        .build();
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID_SILENT)
+                .setContentTitle("Chat Service")
+                .setContentText("Running in background")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(pendingIntent)
+                .setSound(null)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
 
-                startForeground(1, notification);
-            }
+        startForeground(1, notification);
         return START_STICKY;
     }
 
@@ -107,21 +99,24 @@ public class ChatService extends Service {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
+            NotificationChannel msgChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Chat Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    "Messages",
+                    NotificationManager.IMPORTANCE_HIGH
             );
+            msgChannel.enableLights(true);
+            msgChannel.enableVibration(true);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
-            NotificationChannel channel = new NotificationChannel(
+            manager.createNotificationChannel(msgChannel);
+
+            NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID_SILENT,
                     "Service Running",
                     NotificationManager.IMPORTANCE_LOW
             );
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(serviceChannel);
 
         }
     }
@@ -139,7 +134,7 @@ public class ChatService extends Service {
                 return;
             }
 
-            Log.i(TAG, "call: Ikkada daka vachinatte");
+            Log.i(TAG, "call: Msg vachindi roiii");
 
             RealmConfiguration config = new RealmConfiguration.Builder()
                     .allowWritesOnUiThread(true)
@@ -162,15 +157,24 @@ public class ChatService extends Service {
                 }
             });
 
+            Intent activityIntent = new Intent(ChatService.this, ChatWindow.class);
+            PendingIntent contentIntent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                contentIntent = PendingIntent.getActivity(ChatService.this, 0, activityIntent, PendingIntent.FLAG_MUTABLE);
+            }
+
             // Create a remote input for the reply action
-            RemoteInput remoteInput = new RemoteInput.Builder(ACTION_REPLY)
-                    .setLabel("Reply")
-                    .build();
+            RemoteInput remoteInput = new RemoteInput.Builder(ACTION_REPLY).setLabel("Reply").build();
+            Intent chatIntent = new Intent(ChatService.this, DirectReplyReceiver.class);
+            PendingIntent chatPendingIntent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                chatPendingIntent = PendingIntent.getBroadcast(ChatService.this, 0, chatIntent, PendingIntent.FLAG_MUTABLE);
+            }
 
             // Create a reply action with the remote input
             NotificationCompat.Action replyAction =
                     new NotificationCompat.Action.Builder(R.drawable.ic_send,
-                            "Reply", getReplyIntent())
+                            "Reply", chatPendingIntent)
                             .addRemoteInput(remoteInput)
                             .build();
 
@@ -178,8 +182,7 @@ public class ChatService extends Service {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             // Get existing notifications
-            StatusBarNotification[] activeNotifications = new StatusBarNotification[0];
-            activeNotifications = manager.getActiveNotifications();
+            StatusBarNotification[] activeNotifications = manager.getActiveNotifications();
 
             int msgId = 0;
 
@@ -201,69 +204,21 @@ public class ChatService extends Service {
                 }
             }
 
-            // Create intent to launch chat activity
-            Intent chatIntent = new Intent(ChatService.this, ChatWindow.class);
-            PendingIntent chatPendingIntent = PendingIntent.getActivity(ChatService.this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
             // Create the notification with the reply action
             Notification notification = new NotificationCompat.Builder(ChatService.this, CHANNEL_ID)
                     .setContentTitle("New message")
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .addAction(replyAction)
-                    .setOngoing(true)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(updatedText))
-                    .setContentIntent(chatPendingIntent) // Set content intent here
+                    .setContentIntent(contentIntent) // Set content intent here
                     .setAutoCancel(true)
+                    .addAction(replyAction)
                     .build();
 
             manager.notify(msgId, notification);
 
         }
     };
-
-    private void handleReplyAction(Intent intent) {
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
-        if (remoteInput != null) {
-            String replyMessage = remoteInput.getCharSequence("KEY_TEXT_REPLY").toString();
-            JSONObject data = new JSONObject();
-            try {
-                data.put("message", replyMessage);
-                data.put("roomId", "general");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            socket.emit("send", data);
-
-            RealmConfiguration config = new RealmConfiguration.Builder()
-                    .allowWritesOnUiThread(true)
-                    .build();
-            Realm realm = Realm.getInstance(config);
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    ChatMessage chatMessage = realm.createObject(ChatMessage.class);
-                    chatMessage.setMessage(replyMessage);
-                    chatMessage.setSender("");
-                    chatMessage.setTimestamp(System.currentTimeMillis());
-                }
-            });
-
-            Toast.makeText(ChatService.this, "Reply sent: " + replyMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private PendingIntent getReplyIntent() {
-        Log.d(TAG, "getReplyIntent: Entra idhi intha late aa");
-        // Create an intent that opens the reply activity
-        Intent replyIntent = new Intent(this, ChatService.class);
-        replyIntent.setAction(ACTION_REPLY);
-        PendingIntent replyPendingIntent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            replyPendingIntent = PendingIntent.getBroadcast(ChatService.this,
-                    0, replyIntent, PendingIntent.FLAG_MUTABLE);
-        }
-        return replyPendingIntent;
-    }
 
     public static boolean isRunning() {
         return running;
