@@ -61,7 +61,7 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "ChatService OnStartCommand", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "ChatService OnStartCommand", Toast.LENGTH_SHORT).show();
         Log.i(TAG, "onStartCommand: Action is not null");
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -150,12 +150,12 @@ public class ChatService extends Service {
                 }
             });
 
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                public void run() {
-                    Toast.makeText(ChatService.this, "vachindi vachindi", Toast.LENGTH_SHORT).show();
-                }
-            });
+//            Handler handler = new Handler(Looper.getMainLooper());
+//            handler.post(new Runnable() {
+//                public void run() {
+//                    Toast.makeText(ChatService.this, "vachindi vachindi", Toast.LENGTH_SHORT).show();
+//                }
+//            });
 
             Intent activityIntent = new Intent(ChatService.this, ChatWindow.class);
             PendingIntent contentIntent = null;
@@ -207,14 +207,17 @@ public class ChatService extends Service {
             // Create the notification with the reply action
             Notification notification = new NotificationCompat.Builder(ChatService.this, CHANNEL_ID)
                     .setContentTitle("New message")
+                    .setContentText(message)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(updatedText))
                     .setContentIntent(contentIntent) // Set content intent here
                     .setAutoCancel(true)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
                     .addAction(replyAction)
                     .build();
-
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
             manager.notify(msgId, notification);
 
         }

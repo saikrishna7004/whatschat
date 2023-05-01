@@ -30,6 +30,7 @@
             app:tabTextColor="@android:color/darker_gray"
             app:tabSelectedTextColor="@android:color/white"
             app:tabIndicatorColor="@color/white"
+            app:tabMode="fixed"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:contentDescription="@string/chats" />
     </com.google.android.material.appbar.AppBarLayout>

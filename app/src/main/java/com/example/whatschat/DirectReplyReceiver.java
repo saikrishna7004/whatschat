@@ -53,7 +53,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
             }
             socket.emit("send", data);
 
-            Toast.makeText(context, "Reply sent: " + replyMessage, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Reply sent: " + replyMessage, Toast.LENGTH_SHORT).show();
 
             RealmConfiguration config = new RealmConfiguration.Builder()
                     .allowWritesOnUiThread(true)
@@ -69,7 +69,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
                 }
             });
 
-            Toast.makeText(context, "Reply sent: " + replyMessage, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Reply sent: " + replyMessage, Toast.LENGTH_SHORT).show();
 
             Intent activityIntent = new Intent(context, ChatService.class);
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -91,6 +91,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
                     new NotificationCompat.Action.Builder(R.drawable.ic_send,
                             "Reply", chatPendingIntent)
                             .addRemoteInput(mRemoteInput)
+                            .setAllowGeneratedReplies(false) // disable suggestions
                             .build();
 
             // Show the notification
@@ -122,6 +123,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
             // Create the notification with the reply action
             Notification notification = new NotificationCompat.Builder(context, ChatService.CHANNEL_ID)
                     .setContentTitle("New message")
+                    .setContentText("Me: "+replyMessage)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -131,7 +133,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
                     .setContentIntent(contentIntent) // Set content intent here
                     .setAutoCancel(true)
                     .build();
-
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
             manager.notify(msgId, notification);
 
         }
