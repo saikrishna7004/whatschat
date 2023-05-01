@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/button_rounded_green.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/edittext_rounded_border.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/ic_back_white.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/ic_send.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/left_message_bubble.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/list_item_pressed.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/list_item_ripple.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/list_item_selector.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/middle_message_bubble.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/right_message_bubble.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/ripple.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/scrollbar_vertical_thumb.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/send.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/drawable/splashscreen_bg.xml" value="0.1745" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/activity_chat_window.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/chat_item.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/chat_list.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/chat_window.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/fragment_call.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/fragment_chat.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/fragment_chat_home.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/fragment_main.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/left_message.xml" value="0.33" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/middle_message.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/right_message.xml" value="0.33" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/splash_screen.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/layout/toolbar_with_image.xml" value="0.2" />
+        <entry key="..\:/Users/Karnati Sai Krishna/AndroidStudioProjects/WhatsChat/app/src/main/res/menu/main_menu.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

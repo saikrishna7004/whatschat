@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_700">#B493FD</color>
+    <color name="left_msg">#1f2c34</color>
+    <color name="right_msg">#005d4b</color>
+    <color name="black">#ffffffff</color>
+    <color name="white">#ff000000</color>
+    <color name="date_color">#84969e</color>
+    <color name="purple_500">#252525</color>
+</resources>
