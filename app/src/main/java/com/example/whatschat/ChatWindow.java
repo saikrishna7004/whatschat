@@ -61,7 +61,7 @@ public class ChatWindow extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("name");
-            setTitle(name);
+            toolbar.setTitle(name);
         }
 
         mediaPlayer = MediaPlayer.create(this, R.raw.msg);

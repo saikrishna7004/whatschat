@@ -17,4 +17,5 @@
     <color name="info_text_color">#303030</color>
     <color name="left_msg">#ffffff</color>
     <color name="right_msg">#e7ffdb</color>
+    <color name="red">#ff0000</color>
 </resources>

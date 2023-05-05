@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,6 +73,7 @@ public class ChatService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .setSound(null)
+                .setNumber(1)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
 
@@ -106,6 +108,7 @@ public class ChatService extends Service {
             );
             msgChannel.enableLights(true);
             msgChannel.enableVibration(true);
+            msgChannel.setLightColor(Color.RED);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(msgChannel);
@@ -160,7 +163,7 @@ public class ChatService extends Service {
             Intent activityIntent = new Intent(ChatService.this, ChatWindow.class);
             PendingIntent contentIntent = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                contentIntent = PendingIntent.getActivity(ChatService.this, 0, activityIntent, PendingIntent.FLAG_MUTABLE);
+                contentIntent = PendingIntent.getActivity(ChatService.this, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
             }
 
             // Create a remote input for the reply action
@@ -168,7 +171,7 @@ public class ChatService extends Service {
             Intent chatIntent = new Intent(ChatService.this, DirectReplyReceiver.class);
             PendingIntent chatPendingIntent = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                chatPendingIntent = PendingIntent.getBroadcast(ChatService.this, 0, chatIntent, PendingIntent.FLAG_MUTABLE);
+                chatPendingIntent = PendingIntent.getBroadcast(ChatService.this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
             }
 
             // Create a reply action with the remote input
@@ -176,6 +179,7 @@ public class ChatService extends Service {
                     new NotificationCompat.Action.Builder(R.drawable.ic_send,
                             "Reply", chatPendingIntent)
                             .addRemoteInput(remoteInput)
+                            .setAllowGeneratedReplies(true)
                             .build();
 
             // Show the notification
@@ -214,6 +218,7 @@ public class ChatService extends Service {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(updatedText))
                     .setContentIntent(contentIntent) // Set content intent here
                     .setAutoCancel(true)
+                    .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
                     .addAction(replyAction)
                     .build();

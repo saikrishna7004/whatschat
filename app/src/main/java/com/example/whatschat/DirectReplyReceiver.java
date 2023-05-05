@@ -129,6 +129,7 @@ public class DirectReplyReceiver extends BroadcastReceiver {
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .addAction(replyAction)
                     .setOngoing(true)
+                    .setNumber(0)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(updatedText))
                     .setContentIntent(contentIntent) // Set content intent here
                     .setAutoCancel(true)

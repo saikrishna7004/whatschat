@@ -83,7 +83,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), ChatWindow.class);
             intent.putExtra("name", nameTextView.getText());
-            intent.putExtra("sockerId", nameTextView.getText());
+            intent.putExtra("socketId", nameTextView.getText());
             v.getContext().startActivity(intent);
         }
     }

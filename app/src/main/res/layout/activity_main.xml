@@ -51,7 +51,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/app_name"
         app:srcCompat="@android:drawable/ic_dialog_email"
-        app:tint="@color/white"
+        app:tint="@android:color/white"
         app:backgroundTint="@color/purple_500"
         tools:ignore="DuplicateSpeakableTextCheck" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

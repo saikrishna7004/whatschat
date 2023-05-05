@@ -15,8 +15,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="12dp"
         android:text="Jai Srimannarayana"
+        android:textIsSelectable="true"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:autoLink="web"
+        android:linksClickable="true"/>
 
     <TextView
         android:id="@+id/timestamp_text_view"

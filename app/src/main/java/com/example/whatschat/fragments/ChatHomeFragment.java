@@ -1,12 +1,20 @@
 package com.example.whatschat.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -82,9 +90,9 @@ public class ChatHomeFragment extends Fragment {
                                         String name = userList.getString(id);
                                         if (id.equals(socket.id())) continue;
                                         chatList.add(0, new Chat(name, "Hey, there!", R.drawable.person));
-                                        mAdapter.notifyDataSetChanged();
                                     }
                                     chatList.add(0, new Chat("General Stream", "Yo bros.. Sigma boys...", R.drawable.person));
+                                    mAdapter.notifyDataSetChanged();
                                 } catch (JSONException ignored) {
                                 }
                             }
@@ -96,8 +104,20 @@ public class ChatHomeFragment extends Fragment {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                socket.emit("get-users");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
         return view;
     }
+
 
     private List<Chat> createChatList() {
         List<Chat> chatList = new ArrayList<>();

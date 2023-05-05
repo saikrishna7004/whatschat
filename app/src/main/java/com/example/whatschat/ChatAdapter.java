@@ -1,13 +1,25 @@
 package com.example.whatschat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Build;
 import android.text.Html;
+import androidx.appcompat.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.whatschat.fragments.ChatHomeFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,13 +106,70 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return chatMessages.size();
     }
 
+    public static class ActionModeCallback implements ActionMode.Callback {
+
+        View view;
+
+        ActionModeCallback(View view){
+            this.view = view;
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.message_action_mode, menu);
+            mode.setTitle("1");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            // This method is called every time the action mode is shown. You can update the menu here if needed.
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            // Handle the menu item clicks here
+            TextView messageTextView = view.findViewById(R.id.message_text_view);
+            switch (item.getItemId()) {
+                case R.id.action_copy:
+                    ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboard.setPrimaryClip(ClipData.newPlainText("message", messageTextView.getText()));
+                    mode.finish();
+                    return true;
+                case R.id.action_delete:
+                    // Delete the selected message
+                    // ...
+                    Toast.makeText(view.getContext(), "Delete action called", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {}
+    }
+
     public static class LeftMessageViewHolder extends RecyclerView.ViewHolder {
         public TextView messageTextView;
         public TextView senderTextView;
         public TextView timestampTextView;
+        private Toolbar normalModeToolbar;
+        private Toolbar actionModeToolbar;
 
         public LeftMessageViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    ActionModeCallback mActionModeCallback = new ActionModeCallback(view);
+                    ((AppCompatActivity) view.getContext()).startSupportActionMode(mActionModeCallback);
+                    return true;
+                }
+            });
 
             messageTextView = itemView.findViewById(R.id.message_text_view);
             senderTextView = itemView.findViewById(R.id.sender_text_view);
@@ -111,9 +180,19 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class RightMessageViewHolder extends RecyclerView.ViewHolder {
         public TextView messageTextView;
         public TextView timestampTextView;
+        private Toolbar toolbar;
 
         public RightMessageViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    ActionModeCallback mActionModeCallback = new ActionModeCallback(view);
+                    ((AppCompatActivity) view.getContext()).startSupportActionMode(mActionModeCallback);
+                    return true;
+                }
+            });
 
             messageTextView = itemView.findViewById(R.id.message_text_view);
             timestampTextView = itemView.findViewById(R.id.timestamp_text_view);
@@ -130,4 +209,5 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             messageTextView = itemView.findViewById(R.id.middle_chat_message);
         }
     }
+
 }
